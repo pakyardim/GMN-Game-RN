@@ -19,80 +19,70 @@ export default function StartGameScreen() {
     setEnteredNum("");
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Guess My Number</Text>
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Enter a Number</Text>
         <TextInput
           style={styles.input}
           value={enteredNum}
+          maxLength={2}
+          keyboardType="number-pad"
           onChangeText={inputHandler}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         <View style={styles.buttons}>
-          <View style={styles.button}>
+          <View style={styles.buttonContainer}>
             <PrimaryButton onPress={handleResetPress}>Reset</PrimaryButton>
           </View>
-          <View style={styles.button}>
+          <View style={styles.buttonContainer}>
             <PrimaryButton onPress={handleConfirmPress}>Confirm</PrimaryButton>
           </View>
         </View>
       </View>
-      <StatusBar style="light" />
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    paddingTop: 100,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    backgroundColor: "#1e085a",
-  },
-
-  heading: {
-    borderWidth: 1,
-    borderColor: "#ffffff",
-    padding: 16,
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#ffffff",
-    marginBottom: 50,
-  },
-
   inputContainer: {
+    marginTop: 100,
     borderRadius: 8,
-    backgroundColor: "brown",
-    width: "80%",
+    backgroundColor: "#3b021f",
     padding: 8,
+    marginHorizontal: 16,
     justifyContent: "space-between",
     alignItems: "center",
     height: 150,
+    
+    elevation: 4,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2},
+    shadowRadius: 6,
+    shadowOpacity: 0.25,
   },
 
   inputLabel: {
-    color: "white",
+    color: "#ddb52f",
     fontSize: 18,
     marginBottom: 16,
   },
 
   input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
-    width: 48,
+    borderBottomWidth: 2,
+    fontSize: 24,
+    color: "#ddb52f",
+    marginVertical: 8,
+    fontWeight: "bold",
+    borderBottomColor: "#ddb52f",
+    height: 30,
+    textAlign: "center",
+    width: 50,
   },
 
   buttons: {
     flexDirection: "row",
     margin: 10,
   },
-
-  button: {
+  buttonContainer: {
     flex: 1,
-    borderRadius: 10,
-    marginHorizontal: 5,
-    overflow: "hidden",
   },
 });
