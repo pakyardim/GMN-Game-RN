@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import Title from "../components/Title";
+import Colors from "../constants/colors";
 
 export default function GameScreen() {
   return (
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   },
   guessContainer: {
     borderWidth: 3,
-    borderColor: "#ddb52f",
+    borderColor: Colors.accent500,
     height: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   guessText: {
     fontSize: 36,
     fontWeight: "700",
-    color: "#ddb52f",
+    color: Colors.accent500,
   },
   questionContainer: {
     width: "70%",
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 24,
-    color: "#ddb52f",
+    color: Colors.accent500,
   },
   buttons: {
     flexDirection: "row",
