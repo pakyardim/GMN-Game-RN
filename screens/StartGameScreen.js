@@ -1,11 +1,10 @@
-import { Button, StyleSheet, Text, TextInput, View, Alert } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
+import Title from "../components/Title";
 
-export default function StartGameScreen() {
+export default function StartGameScreen(props) {
   const [enteredNum, setEnteredNum] = useState("");
-  const [number, setNumber] = useState("");
 
   function inputHandler(enteredText) {
     setEnteredNum(enteredText);
@@ -17,8 +16,7 @@ export default function StartGameScreen() {
       Alert.alert('Invalid Number!', 'Number has to be a number between 0 and 99.', [{ text: 'Okay', style: 'destructive', onPress: handleResetPress}])
       return; 
     }
-    setNumber(chosenNum);
-    
+    props.onPickNumber(chosenNum);
   }
 
   function handleResetPress() {
@@ -26,7 +24,8 @@ export default function StartGameScreen() {
   }
 
   return (
-      <View style={styles.inputContainer}>
+    <View style={styles.inputContainer}>
+        <Title>Guess My Number</Title>
         <Text style={styles.inputLabel}>Enter a Number</Text>
         <TextInput
           style={styles.input}
