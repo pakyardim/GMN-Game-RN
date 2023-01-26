@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import { useState } from "react";
-import PrimaryButton from "../components/PrimaryButton";
-import Title from "../components/Title";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
 import Colors from "../constants/colors";
 
 export default function StartGameScreen(props) {
@@ -13,9 +13,13 @@ export default function StartGameScreen(props) {
 
   function handleConfirmPress() {
     const chosenNum = parseInt(enteredNum);
-    if(isNaN(chosenNum) || chosenNum <= 0 || chosenNum > 99){
-      Alert.alert('Invalid Number!', 'Number has to be a number between 0 and 99.', [{ text: 'Okay', style: 'destructive', onPress: handleResetPress}])
-      return; 
+    if (isNaN(chosenNum) || chosenNum <= 0 || chosenNum > 99) {
+      Alert.alert(
+        "Invalid Number!",
+        "Number has to be a number between 0 and 99.",
+        [{ text: "Okay", style: "destructive", onPress: handleResetPress }]
+      );
+      return;
     }
     props.onPickNumber(chosenNum);
   }
@@ -25,8 +29,9 @@ export default function StartGameScreen(props) {
   }
 
   return (
-    <View style={styles.inputContainer}>
-        <Title>Guess My Number</Title>
+    <View style={styles.rootContainer}>
+      <Title>Guess My Number</Title>
+      <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Enter a Number</Text>
         <TextInput
           style={styles.input}
@@ -46,23 +51,28 @@ export default function StartGameScreen(props) {
           </View>
         </View>
       </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
+  rootContainer: {
+    flex: 1,
+    alignItems: "center",
     marginTop: 100,
+  },
+  inputContainer: {
+    marginTop: 36,
     borderRadius: 8,
     backgroundColor: Colors.primary800,
     padding: 8,
     marginHorizontal: 16,
     justifyContent: "space-between",
     alignItems: "center",
-    height: 150,
-    
+
     elevation: 4,
     shadowColor: "black",
-    shadowOffset: { width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.25,
   },
@@ -70,6 +80,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     color: Colors.accent500,
     fontSize: 18,
+    fontWeight: "700",
     marginBottom: 16,
   },
 

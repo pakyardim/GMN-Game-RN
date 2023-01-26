@@ -1,24 +1,74 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import PrimaryButton from "../components/PrimaryButton";
-import Title from "../components/Title";
+import { Alert, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
 import Colors from "../constants/colors";
+import NumberContainer from "../components/game/NumberContainer";
 
-export default function GameScreen() {
+function generateRandomBetween(min, max, exclude) {
+  const rndNum = Math.floor(Math.random() * (max - min)) + min;
+  if (rndNum === exclude) {
+    return generateRandomBetween(min, max, exclude);
+  } else {
+    return rndNum;
+  }
+}
+
+let minBoundary = 1;
+let maxBoundary = 100;
+
+export default function GameScreen({ userNumber }) {
+  const initialGuess = generateRandomBetween(
+    minBoundary,
+    maxBoundary,
+    userNumber
+  );
+  const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  function nextGuessHandler(direction) {
+    if (
+      (direction === "lower" && currentGuess < userNumber) ||
+      (direction === "greater" && currentGuess > userNumber)
+    ) {
+      Alert.alert(
+        "YOU'RE A LIAR.",
+        "YOU LIED TO THE GAME, YOU LIED TO THE HOLY SPIRIT, YOU LIED TO THE WORLD PEACE.",
+        [{ text: "I'll be more careful sir", style: "cancel" }]
+      );
+      return;
+    }
+
+    if (direction === "lower") {
+      console.log("zombaa1");
+      maxBoundary = currentGuess;
+    } else {
+      console.log("zombaa2");
+      minBoundary = currentGuess + 1;
+    }
+    const newRndNum = generateRandomBetween(
+      minBoundary,
+      maxBoundary,
+      currentGuess
+    );
+    setCurrentGuess(newRndNum);
+  }
+
   return (
     <View style={styles.outerContainer}>
       <Title>Opponent's Guess</Title>
-      <View style={styles.guessContainer}>
-        <Text style={styles.guessText}>41</Text>
-      </View>
+      <NumberContainer>{currentGuess}</NumberContainer>
       <View style={styles.questionContainer}>
         <Text style={styles.questionText}>Higher or Lower?</Text>
         <View style={styles.buttons}>
           <View style={styles.buttonContainer}>
-            <PrimaryButton>-</PrimaryButton>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              -
+            </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
-            <PrimaryButton>+</PrimaryButton>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              +
+            </PrimaryButton>
           </View>
         </View>
       </View>
@@ -36,23 +86,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  guessContainer: {
-    borderWidth: 3,
-    borderColor: Colors.accent500,
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    width: "70%",
-  },
-  guessText: {
-    fontSize: 36,
-    fontWeight: "700",
-    color: Colors.accent500,
-  },
   questionContainer: {
     width: "70%",
-    marginTop: 40,
     borderRadius: 8,
     backgroundColor: "#3b021f",
     padding: 8,
@@ -60,7 +95,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     height: 124,
-
     elevation: 4,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
@@ -78,7 +112,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
   },
-  opponentGuessContainer:{
+  opponentGuessContainer: {
     backgroundColor: "yellow",
     borderRadius: 24,
     borderWidth: 1,
@@ -88,5 +122,5 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
-  }
+  },
 });
