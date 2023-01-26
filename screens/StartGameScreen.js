@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, Alert } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
@@ -7,17 +7,24 @@ export default function StartGameScreen() {
   const [enteredNum, setEnteredNum] = useState("");
   const [number, setNumber] = useState("");
 
-  function inputHandler(e) {
-    setEnteredNum(e);
+  function inputHandler(enteredText) {
+    setEnteredNum(enteredText);
   }
 
   function handleConfirmPress() {
-    setNumber(enteredNum);
+    const chosenNum = parseInt(enteredNum);
+    if(isNaN(chosenNum) || chosenNum <= 0 || chosenNum > 99){
+      Alert.alert('Invalid Number!', 'Number has to be a number between 0 and 99.', [{ text: 'Okay', style: 'destructive', onPress: handleResetPress}])
+      return; 
+    }
+    setNumber(chosenNum);
+    
   }
 
   function handleResetPress() {
     setEnteredNum("");
   }
+
   return (
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Enter a Number</Text>
