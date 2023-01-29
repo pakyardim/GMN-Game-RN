@@ -1,9 +1,10 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
 import Colors from "../constants/colors";
 import NumberContainer from "../components/game/NumberContainer";
+import { Ionicons } from '@expo/vector-icons';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -17,13 +18,19 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-export default function GameScreen({ userNumber }) {
+export default function GameScreen({ userNumber, onGameOver }) {
   const initialGuess = generateRandomBetween(
-    minBoundary,
-    maxBoundary,
+    1,
+    100,
     userNumber
   );
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  useEffect(() => {
+    if(currentGuess === userNumber){
+      onGameOver();
+    }
+  }, [currentGuess, userNumber, onGameOver]);
 
   function nextGuessHandler(direction) {
     if (
@@ -62,12 +69,12 @@ export default function GameScreen({ userNumber }) {
         <View style={styles.buttons}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-              -
+              <Ionicons name="md-remove" size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-              +
+            <Ionicons name="md-add" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
@@ -103,6 +110,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 24,
+    fontFamily: 'Open-Sans',
     color: Colors.accent500,
   },
   buttons: {

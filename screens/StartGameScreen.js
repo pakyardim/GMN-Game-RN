@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     color: Colors.accent500,
     fontSize: 18,
     fontWeight: "700",
+    fontFamily: 'Open-Sans',
     marginBottom: 16,
   },
 
