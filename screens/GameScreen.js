@@ -1,10 +1,11 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View, FlatList } from "react-native";
 import { useState, useEffect } from "react";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
 import Colors from "../constants/colors";
 import NumberContainer from "../components/game/NumberContainer";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -19,23 +20,20 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 export default function GameScreen({ userNumber, onGameOver }) {
-  const initialGuess = generateRandomBetween(
-    1,
-    100,
-    userNumber
-  );
+  const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
-    if(currentGuess === userNumber){
-      onGameOver();
+    if (currentGuess === userNumber) {
+      onGameOver(guessRounds.length);
     }
   }, [currentGuess, userNumber, onGameOver]);
 
   useEffect(() => {
     minBoundary = 1;
     maxBoundary = 100;
-  },[])
+  }, []);
 
   function nextGuessHandler(direction) {
     if (
@@ -63,7 +61,10 @@ export default function GameScreen({ userNumber, onGameOver }) {
       currentGuess
     );
     setCurrentGuess(newRndNum);
+    setGuessRounds((prevGuessRound) => [newRndNum, ...prevGuessRound]);
   }
+
+  const guessRoundsListLength = guessRounds.length;
 
   return (
     <View style={styles.outerContainer}>
@@ -79,14 +80,17 @@ export default function GameScreen({ userNumber, onGameOver }) {
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-            <Ionicons name="md-add" size={24} color="white" />
+              <Ionicons name="md-add" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </View>
       <View style={styles.opponentGuessContainer}>
-        <Text>#1</Text>
-        <Text>Opponent's Guess: 41</Text>
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => <GuessLogItem roundNumber={guessRoundsListLength - itemData.index} guess={itemData.item}/>}
+          keyExtractor={(item) => item}
+        />
       </View>
     </View>
   );
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 24,
-    fontFamily: 'Open-Sans',
+    fontFamily: "Open-Sans",
     color: Colors.accent500,
   },
   buttons: {
@@ -126,14 +130,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   opponentGuessContainer: {
-    backgroundColor: "yellow",
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: "black",
-    width: "70%",
-    marginTop: 32,
-    padding: 10,
+    flex: 1,
+    padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
+    width: "70%",
   },
+  
 });
