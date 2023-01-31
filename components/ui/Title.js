@@ -11,12 +11,13 @@ export default function Title({ children }) {
 const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Open-Sans-Bold',
-    width: "80%",
+    maxWidth: "80%",
     borderWidth: 2,
     borderColor: "white",
     padding: 16,
     fontSize: 24,
     color: "white",
     textAlign: "center",
+    width: 300,
   },
 });

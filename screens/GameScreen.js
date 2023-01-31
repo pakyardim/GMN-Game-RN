@@ -49,10 +49,8 @@ export default function GameScreen({ userNumber, onGameOver }) {
     }
 
     if (direction === "lower") {
-      console.log("zombaa1");
       maxBoundary = currentGuess;
     } else {
-      console.log("zombaa2");
       minBoundary = currentGuess + 1;
     }
     const newRndNum = generateRandomBetween(
